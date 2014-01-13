@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2013 Jon Herman, Josh Kollat, Patrick Reed and others.
+Copyright (C) 2013 Matteo Giuliani, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     // read user input: single input for calibration, two inputs for simulation
     string input_file = argv[1];
     string output_file;
-    if(argc>2){
+    if(argc > 2){
         output_file = argv[2];
     }
 
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     }
 
     // save simulation results
-    if(argc>2){
+    if(argc > 2){
         utils::logArray(myHBV.getFluxes().Qsim, nDays, output_file);
     }
 
