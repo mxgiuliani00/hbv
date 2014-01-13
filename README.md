@@ -14,7 +14,7 @@ To compile and run:
 
 * Run `make` to compile. Modify the makefile first to use a different compiler or flags.
 * Run `./hbv my_forcing_data.txt < my_parameter_samples.txt` to perform simulation
-* For calibration using ([MOEAFramework](http://moeaframework.org)), follow the instructions for connecting an external optimization problem ([here](http://moeaframework.org/examples.html#example5)). More detailed instructions are available from the ([MOEAFramework Setup Guide](https://docs.google.com/document/pub?id=1Ts_tnvzZ-nDQ-Ym-RFtqM_LJMUNYKFZJ5WJdZxRmmrY)). 
+* For calibration using [MOEAFramework](http://moeaframework.org), follow the instructions for connecting an external optimization problem [here](http://moeaframework.org/examples.html#example5). More detailed instructions are available from the [MOEAFramework Setup Guide](https://docs.google.com/document/pub?id=1Ts_tnvzZ-nDQ-Ym-RFtqM_LJMUNYKFZJ5WJdZxRmmrY). 
 
 Arguments:
 * `my_forcing_data.txt`: see the `example_data` directory for the format being used.
