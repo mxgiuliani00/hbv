@@ -1,5 +1,7 @@
 ###HBV Rainfall-Runoff Model (C++)
 
+By [Matteo Giuliani](http://www.deib.polimi.it/personale/ruolo/dettaglio.php?id_persona=1250&idlang=eng&ruolo=6&lettera=), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
+
 HBV Rainfall-runoff model, based on the work by ([Bergstrom 1995](http://www.cabdirect.org/abstracts/19961904773.html)). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. 
 
 Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from `stdin` and evaluate them in order. Calibration is currently configured to work with ([MOEAFramework](http://moeaframework.org)), but may be easily modified for use with another application.
