@@ -1,0 +1,6 @@
+## Files to ignore in version control
+*.exe
+*.o
+*.so
+*.a
+hbv_report/*
