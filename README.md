@@ -4,22 +4,27 @@ By [Matteo Giuliani](http://www.deib.polimi.it/personale/ruolo/dettaglio.php?id_
 
 HBV Rainfall-runoff model, based on the work by ([Bergstrom 1995](http://www.cabdirect.org/abstracts/19961904773.html)). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. 
 
-Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from `stdin` and evaluate them in order. Calibration is currently configured to work with ([MOEAFramework](http://moeaframework.org)), but may be easily modified for use with another application.
+Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from `stdin` and evaluate them in order. Calibration is currently configured to work with [MOEAFramework](http://moeaframework.org), but may be easily modified for use with another application.
 
 Contents:
-* `MOPEXData.cpp/h`: Read and store forcing data from the MOPEX dataset using the format shown in the `example_data` directory. This will not be needed for users who have their own forcing data in a different format.
-* `HBV.h`: Defines the `HBV` structure to store all states and fluxes at each timestep over the course of the evaluation.
-* `HBV.cpp`: Defines the functions for the processes in the model: degree-day snow, PDM soil moisture, Hamon PE, and the water balance between reservoirs. 
-* `main_HBV.cpp`: Defines the initialization function (called once), the calculation function (called for each model evaluation), and the main function (performs model runs for each parameter set read from `stdin`).
+* `data/`: Example forcing data files showing the input format
+* `hbv_model.h`: Defines the `HBV` class to store all states and fluxes at each timestep over the course of the evaluation.
+* `hbv_model.cpp`: Defines the functions for the processes in the model: degree-day snow, PDM soil moisture, Hamon PE, and the water balance between reservoirs. 
+* `main_HBV.cpp`: Defines the initialization function (called once), the calculation function (called for each model evaluation), and the main function
+* `CalHBV.java`: Example Java class for calibration with [MOEAFramework](http://moeaframework.org) (optional).
+* `moeaframework.c/h`: Required libraries for communication with stdin/out
+* `utils.cpp/h`: Utilities for vector operations
 
 To compile and run:
 
 * Run `make` to compile. Modify the makefile first to use a different compiler or flags.
-* Run `./hbv my_forcing_data.txt < my_parameter_samples.txt` to perform simulation
+* Run `./hbv my_forcing_data.txt my_output_file.txt < my_parameter_samples.txt` to perform simulation
 * For calibration using [MOEAFramework](http://moeaframework.org), follow the instructions for connecting an external optimization problem [here](http://moeaframework.org/examples.html#example5). More detailed instructions are available from the [MOEAFramework Setup Guide](https://docs.google.com/document/pub?id=1Ts_tnvzZ-nDQ-Ym-RFtqM_LJMUNYKFZJ5WJdZxRmmrY). 
+* Note that the second argument (the output filename) is only available in simulation mode.
 
 Arguments:
-* `my_forcing_data.txt`: see the `example_data` directory for the format being used.
+* `my_forcing_data.txt`: see the `data/` directory for the format being used.
+* `my_output_file.txt`: name of file to output performance metric(s) (simulation mode only)
 * `my_parameter_samples.txt`: parameter sets to be evaluated in the model, with one parameter per column. Currently there are 12 parameters being read into the model, which would correspond to 12 columns per row of this file. The parameters are read from `stdin`, hence the `<` operator to pipe the contents of the file to the executable. The order of parameters to be read in can be modified at `main.cpp:60`.
 
 In its current form, the model will output (or optimize) the mean squared error (MSE) from the time period. However, the output can easily be modified to include any combination of states/fluxes or error metrics from any time during the simulation.
