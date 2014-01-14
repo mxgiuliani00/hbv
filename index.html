@@ -38,30 +38,39 @@
 
 <p>HBV Rainfall-runoff model, based on the work by (<a href="http://www.cabdirect.org/abstracts/19961904773.html">Bergstrom 1995</a>). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. </p>
 
-<p>Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from <code>stdin</code> and evaluate them in order. Calibration is currently configured to work with (<a href="http://moeaframework.org">MOEAFramework</a>), but may be easily modified for use with another application.</p>
+<p>Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from <code>stdin</code> and evaluate them in order. Calibration is currently configured to work with <a href="http://moeaframework.org">MOEAFramework</a>, but may be easily modified for use with another application.</p>
 
 <p>Contents:</p>
 
 <ul>
 <li>
-<code>MOPEXData.cpp/h</code>: Read and store forcing data from the MOPEX dataset using the format shown in the <code>example_data</code> directory. This will not be needed for users who have their own forcing data in a different format.</li>
+<code>data/</code>: Example forcing data files showing the input format</li>
 <li>
-<code>HBV.h</code>: Defines the <code>HBV</code> structure to store all states and fluxes at each timestep over the course of the evaluation.</li>
+<code>hbv_model.h</code>: Defines the <code>HBV</code> class to store all states and fluxes at each timestep over the course of the evaluation.</li>
 <li>
-<code>HBV.cpp</code>: Defines the functions for the processes in the model: degree-day snow, PDM soil moisture, Hamon PE, and the water balance between reservoirs. </li>
+<code>hbv_model.cpp</code>: Defines the functions for the processes in the model: degree-day snow, PDM soil moisture, Hamon PE, and the water balance between reservoirs. </li>
 <li>
-<code>main_HBV.cpp</code>: Defines the initialization function (called once), the calculation function (called for each model evaluation), and the main function (performs model runs for each parameter set read from <code>stdin</code>).</li>
+<code>main_HBV.cpp</code>: Defines the initialization function (called once), the calculation function (called for each model evaluation), and the main function</li>
+<li>
+<code>CalHBV.java</code>: Example Java class for calibration with <a href="http://moeaframework.org">MOEAFramework</a> (optional).</li>
+<li>
+<code>moeaframework.c/h</code>: Required libraries for communication with stdin/out</li>
+<li>
+<code>utils.cpp/h</code>: Utilities for vector operations</li>
 </ul><p>To compile and run:</p>
 
 <ul>
 <li>Run <code>make</code> to compile. Modify the makefile first to use a different compiler or flags.</li>
-<li>Run <code>./hbv my_forcing_data.txt &lt; my_parameter_samples.txt</code> to perform simulation</li>
+<li>Run <code>./hbv my_forcing_data.txt my_output_file.txt &lt; my_parameter_samples.txt</code> to perform simulation</li>
 <li>For calibration using <a href="http://moeaframework.org">MOEAFramework</a>, follow the instructions for connecting an external optimization problem <a href="http://moeaframework.org/examples.html#example5">here</a>. More detailed instructions are available from the <a href="https://docs.google.com/document/pub?id=1Ts_tnvzZ-nDQ-Ym-RFtqM_LJMUNYKFZJ5WJdZxRmmrY">MOEAFramework Setup Guide</a>. </li>
+<li>Note that the second argument (the output filename) is only available in simulation mode.</li>
 </ul><p>Arguments:</p>
 
 <ul>
 <li>
-<code>my_forcing_data.txt</code>: see the <code>example_data</code> directory for the format being used.</li>
+<code>my_forcing_data.txt</code>: see the <code>data/</code> directory for the format being used.</li>
+<li>
+<code>my_output_file.txt</code>: name of file to output performance metric(s) (simulation mode only)</li>
 <li>
 <code>my_parameter_samples.txt</code>: parameter sets to be evaluated in the model, with one parameter per column. Currently there are 12 parameters being read into the model, which would correspond to 12 columns per row of this file. The parameters are read from <code>stdin</code>, hence the <code>&lt;</code> operator to pipe the contents of the file to the executable. The order of parameters to be read in can be modified at <code>main.cpp:60</code>.</li>
 </ul><p>In its current form, the model will output (or optimize) the mean squared error (MSE) from the time period. However, the output can easily be modified to include any combination of states/fluxes or error metrics from any time during the simulation.</p>
