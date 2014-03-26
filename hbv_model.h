@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2013 Matteo Giuliani, Jon Herman, and others.
+Copyright (C) 2014 Matteo Giuliani, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -108,27 +108,14 @@ public:
     virtual ~hbv_model();
 
     /**
-     * hbv_model constructor with parameters
-     * @param pDayStartId
-     * @param pNdays
-     * @param pStartId
+     * hbv_model constructor with parameters (namefile with the data)
      */
-    hbv_model(int pDayStartId, int pNdays, int pStartId);
+    hbv_model(string dataFile);
 
     /**
      * clear hbv_model structures
      */
     void hbv_delete(int nDays);
-
-
-    /**
-     * Initialization of HBV model (i.e., allocation structures, loading of data, computation of PE
-     * @param dataFile
-     */
-    void init_HBV(string dataFile);
-    void hbv_allocate(int nDays);
-    void readData(string filename);
-    void calculateHamonPE(int dataIndex, int nDays, int startDay);
 
     /**
      * evaluation of HBV model with parameters passed as input
@@ -142,6 +129,21 @@ public:
     hbv_fluxes getFluxes();
 
 protected:
+
+    /**
+     * Initialization of HBV model:
+     *  - allocation structures
+     *  - loading of data
+     *  - computation of PE
+     *  - setting of HBV parameters
+     *  - re-initialization to zero
+     */
+    void hbv_allocate(int nDays);
+    void readData(string filename);
+    void calculateHamonPE(int dataIndex, int nDays, int startDay);
+    void setParameters(double* parameters);
+    void reinitStateFluxes();
+
 
     /**
      * rainfall-runoff processes
@@ -159,8 +161,8 @@ protected:
     void reinitForMaxBas();
 
 
+
     int dayStartIndex;
-    int nDays;
     int startingIndex;
     double tst; // time-step
 

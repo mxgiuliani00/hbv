@@ -61,7 +61,7 @@ public class CalHBV {
 
 		@Override
 		public int getNumberOfObjectives() {
-                        return 1;
+                        return 2;
 		}
 
 		@Override
@@ -127,7 +127,9 @@ public class CalHBV {
                         System.out.print(" ");
                         System.out.print(solution.getVariable(11));
                         System.out.print(" ");
-                        System.out.println(solution.getObjective(0));
+                        System.out.print(solution.getObjective(0));
+                        System.out.print(" ");
+                        System.out.println(solution.getObjective(1));
                         }
 
 		

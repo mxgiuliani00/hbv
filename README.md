@@ -1,13 +1,13 @@
 ###HBV Rainfall-Runoff Model (C++)
 
-By [Matteo Giuliani](http://www.deib.polimi.it/personale/ruolo/dettaglio.php?id_persona=1250&idlang=eng&ruolo=6&lettera=), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
+By [Matteo Giuliani](http://home.deib.polimi.it/giuliani/), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
 
 HBV Rainfall-runoff model, based on the work by ([Bergstrom 1995](http://www.cabdirect.org/abstracts/19961904773.html)). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. 
 
 Both simulation and optimization (calibration) are available. Simulation mode is currently configured to read multiple parameter sets from `stdin` and evaluate them in order. Calibration is currently configured to work with [MOEAFramework](http://moeaframework.org), but may be easily modified for use with another application.
 
 Contents:
-* `data/`: Example forcing data files showing the input format
+* `example_data/`: Example forcing data files showing the input format
 * `hbv_model.h`: Defines the `HBV` class to store all states and fluxes at each timestep over the course of the evaluation.
 * `hbv_model.cpp`: Defines the functions for the processes in the model: degree-day snow, PDM soil moisture, Hamon PE, and the water balance between reservoirs. 
 * `main_HBV.cpp`: Defines the initialization function (called once), the calculation function (called for each model evaluation), and the main function

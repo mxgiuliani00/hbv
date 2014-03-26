@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2013 Matteo Giuliani, Jon Herman, and others.
+Copyright (C) 2014 Matteo Giuliani, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -30,13 +30,17 @@ hbv_model::~hbv_model() {
     // TODO Auto-generated destructor stub
 }
 
-hbv_model::hbv_model(int pDayStartId, int pNdays, int pStartId){
 
-    dayStartIndex = pDayStartId;
-    nDays = pNdays;
-    startingIndex = pStartId;
+hbv_model::hbv_model(string dataFile)
+{
+    //Read input data and allocate internal arrays
+    readData(dataFile);
+
+    //Calculate the Hamon Potential Evaporation for the time series
+    calculateHamonPE(startingIndex, data.nDays, dayStartIndex);
 
 }
+
 
 void hbv_model::hbv_allocate(int nDays)
 {
@@ -302,27 +306,7 @@ void hbv_model::hbv_delete(int nDays)
     return;
 }
 
-void hbv_model::init_HBV(string dataFile)
-{
-    hbv_allocate(nDays);
-    readData(dataFile);
-
-    //Calculate the Hamon Potential Evaporation for the time series
-    calculateHamonPE(startingIndex, nDays, dayStartIndex);
-
-    return;
-}
-
-void hbv_model::calc_HBV(double* parameters)
-{
-
-    // Zero everything at the first timestep
-    states.stw1[0] = 0.0; // shallow layer storage
-    states.stw2[0] = 0.0; // deep layer storage
-    states.sowat[0]   = 0.0; // surface soil storage
-    states.sdep[0]    = 0.0; // snow depth
-    fluxes.Qsim[0] = 0.0;
-    fluxes.actualET[0] = 0.0;
+void hbv_model::setParameters(double* parameters){
 
     // assign parameters to HBV structure
     // Rate constants K0, K1, K2: entered with units of 1/day, but converted to unitless
@@ -339,15 +323,37 @@ void hbv_model::calc_HBV(double* parameters)
     params.fcap = parameters[10]; // Max storage of soil layer [mm]
     params.hl1 = parameters[11]; // Max storage of shallow layer [mm]
 
+}
 
-    //After we have read in maxbas, make sure we reinitialize the arrays based on maxbas
+
+void hbv_model::reinitStateFluxes(){
+
+    // set states and fluxes to zero
+    for(int k=0; k<data.nDays; k++){
+        states.sdep[k] = 0.0;
+        states.sowat[k] = 0.0;
+        states.stw1[k] = 0.0;
+        states.stw2[k] = 0.0;
+        fluxes.actualET[k] = 0.0;
+        fluxes.Qsim[k] = 0.0;
+    }
+
+}
+
+
+void hbv_model::calc_HBV(double* parameters)
+{
+    // set parameters and reinitialize HBV
+    setParameters(parameters);
+    reinitStateFluxes();
     reinitForMaxBas();
 
     // Now run the components of the model
     double Qall, eff_precip;
 
     // Run over daily timesteps (starting at 1)
-    for (int day = 1; day < nDays; day++)
+    for (int day = 1; day < data.nDays; day++)
+    //for (int day = 1; day < 10; day++)
     {
         //Degree-day snow module (sets eff_precip value)
         eff_precip = snow(day);
@@ -428,6 +434,24 @@ void hbv_model::readData(string filename){
     //Return to the beginning of the file
     in.seekg(0, ios::beg);
 
+    //Look for the <INDEX_INIT> key
+    while (sJunk != "<INDEX_INIT>")
+    {
+        in >> sJunk;
+    }
+    in >> startingIndex;
+    //Return to the beginning of the file
+    in.seekg(0, ios::beg);
+
+    //Look for the <DOY_INIT> key
+    while (sJunk != "<DOY_INIT>")
+    {
+        in >> sJunk;
+    }
+    in >> dayStartIndex;
+    //Return to the beginning of the file
+    in.seekg(0, ios::beg);
+
     //Look for the <TEMP_DATA> key
     while (sJunk != "<TEMP_DATA>")
     {
@@ -438,6 +462,8 @@ void hbv_model::readData(string filename){
     in.seekg(0, ios::beg);
 
     //Allocate the arrays
+    hbv_allocate(data.nDays);
+
     data.date = new int* [data.nDays];
     for (int i=0; i<data.nDays; i++) data.date[i] = new int[3];
     data.precip   = new double[data.nDays];

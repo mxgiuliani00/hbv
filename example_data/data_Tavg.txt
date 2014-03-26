@@ -4,8 +4,10 @@
 <GAGE_LATITUDE>      29.860600      # Gage latitude in decimal degrees
 <GAGE_LONGITUDE>    -98.382800      # Gage longitude in decimal degrees
 <DRAINAGE_AREA>     1315.000000     # Drainage basin area in square miles
-<TIME_STEPS>         20454          # Number of time steps of data
 <TEMP_DATA>              1          # Type of temperature data (1=daily average, 2=min and max)
+<TIME_STEPS>         20454          # Number of time steps of data
+<INDEX_INIT>             0     	    # Starting index of the first day in the data-file
+<DOY_INIT>               1     	    # Day of the year of the first day
 
 # Data column format
 

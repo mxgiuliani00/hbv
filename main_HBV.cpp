@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2013 Matteo Giuliani, Jon Herman, and others.
+Copyright (C) 2014 Matteo Giuliani, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -26,22 +26,20 @@ C/C++ Version of HBV: Lumped model, one catchment. Uses Hamon ET and MOPEX forci
 
 using namespace std;
 
-// Time period: 10/1/1961 to 9/30/1972 (1 year of warmup plus 10-year period)
-int dayStartIndex = 274; //10-1 is day 274 of the year
-int nDays = 4017; // length of simulation, including leap years
-int startingIndex = 5023-1; //The starting index of the data file corresponding with the start date
+void evaluate(double* Qobs, double* Qsim, int nDays, double* objs){
 
-double evaluate(double* Qobs, double* Qsim){
-
-    // calibration minimizes the RMSE
-    vector<double> Qerr, Qv, Qv1;
-    for(unsigned int i=0; i<nDays; i++){
-        Qerr.push_back( (Qobs[i] - Qsim[i])*(Qobs[i] - Qsim[i]) );
+    // calibration minimizes the RMSE + maximize R2 (1-year of warmup)
+    vector<double> Qerr, Qerr2, Qv;
+    for(unsigned int i=366; i<nDays; i++){
+        Qerr.push_back( Qobs[i] - Qsim[i] ); // model error
+        Qerr2.push_back( (Qobs[i] - Qsim[i])*(Qobs[i] - Qsim[i]) ); // model squared error
         Qv.push_back( Qobs[i] );
-        Qv1.push_back( Qsim[i] );
     }
-    double MSE = pow( utils::computeMean(Qerr), 0.5 );
-    return MSE;
+    double MSE = pow( utils::computeMean(Qerr2), 0.5 );
+    double R2 = 1 - ( utils::computeVariance( Qerr ) / utils::computeVariance( Qv ) ) ;
+    // 2-objective calibration
+    objs[0] = MSE;
+    objs[1] = -R2;
 }
 
 
@@ -51,34 +49,34 @@ int main(int argc, char **argv)
     // read user input: single input for calibration, two inputs for simulation
     string input_file = argv[1];
     string output_file;
-    if(argc > 2){
+    if(argc>2){
         output_file = argv[2];
     }
 
-    int nobjs = 1;
+    // hbv model
+    hbv_model myHBV(input_file);
+
+    // calibration settings
+    int nobjs = 2;
     int nvars = 12;
     double objs[nobjs];
     double vars[nvars];
 
-    // hbv model
-    hbv_model myHBV(dayStartIndex,nDays,startingIndex);
-    myHBV.init_HBV(input_file);
-
-    // optimization
     MOEA_Init(nobjs, 0);
     while (MOEA_Next_solution() == MOEA_SUCCESS) {
         MOEA_Read_doubles(nvars, vars);
         myHBV.calc_HBV(vars);
-        objs[0] = evaluate(myHBV.getData().flow, myHBV.getFluxes().Qsim);
+        evaluate(myHBV.getData().flow, myHBV.getFluxes().Qsim, myHBV.getData().nDays, objs);
         MOEA_Write(objs, NULL);
     }
 
     // save simulation results
-    if(argc > 2){
-        utils::logArray(myHBV.getFluxes().Qsim, nDays, output_file);
+    if(argc>2){
+        utils::logArray(myHBV.getFluxes().Qsim, myHBV.getData().nDays, output_file);
     }
 
-    myHBV.hbv_delete(nDays);
+    // clear HBV
+    myHBV.hbv_delete(myHBV.getData().nDays);
 
     return 0;
 }

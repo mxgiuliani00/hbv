@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2013 Matteo Giuliani.
+Copyright (C) 2014 Matteo Giuliani, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -14,6 +14,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with HBV.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 
 #ifndef UTILS_H
 #define UTILS_H
