@@ -1,6 +1,6 @@
 ###HBV Rainfall-Runoff Model (C++)
 
-By [Matteo Giuliani](http://home.deib.polimi.it/giuliani/), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
+By [Matteo Giuliani](http://home.deib.polimi.it/giuliani/), [Josh Kollat](https://www.decisionvis.com/), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
 
 HBV Rainfall-runoff model, based on the work by ([Bergstrom 1995](http://www.cabdirect.org/abstracts/19961904773.html)). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. 
 
@@ -33,7 +33,7 @@ Based on work from the following paper:
 Herman, J.D., P.M. Reed, and T. Wagener (2013), Time-varying sensitivity analysis clarifies the effects of watershed model formulation on model behavior, Water Resour. Res., 49, doi:10.1002/wrcr.20124.
 ([Link to Paper](http://onlinelibrary.wiley.com/doi/10.1002/wrcr.20124/abstract))
 
-Copyright (C) 2010-2014 Matteo Giuliani, Jon Herman, and others.
+Copyright (C) 2010-2015 Matteo Giuliani, Josh Kollat, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2014 Matteo Giuliani, Jon Herman, and others.
+Copyright (C) 2010-2015 Matteo Giuliani, Josh Kollat, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
