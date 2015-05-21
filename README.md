@@ -1,6 +1,6 @@
 ###HBV Rainfall-Runoff Model (C++)
 
-By [Matteo Giuliani](http://home.deib.polimi.it/giuliani/), [Josh Kollat](https://www.decisionvis.com/), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
+By [Matteo Giuliani](http://giuliani.faculty.polimi.it), [Josh Kollat](https://www.decisionvis.com/), [Jon Herman](http://reed.cee.cornell.edu/index.php/Jon_Herman), and others.
 
 HBV Rainfall-runoff model, based on the work by ([Bergstrom 1995](http://www.cabdirect.org/abstracts/19961904773.html)). Runs on a daily timestep and saves all states and fluxes from each day for further analysis. 
 
