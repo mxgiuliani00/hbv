@@ -25,7 +25,7 @@ To compile and run:
 Arguments:
 * `my_forcing_data.txt`: see the `example_data/` directory for the format being used.
 * `my_output_file.txt`: name of file to output performance metric(s) (simulation mode only)
-* `my_parameter_samples.txt`: parameter sets to be evaluated in the model, with one parameter per column (e.g., hbv_param.txt). Currently there are 12 parameters being read into the model, which would correspond to 12 columns per row of this file. The parameters are read from `stdin`, hence the `<` operator to pipe the contents of the file to the executable. The order of parameters to be read in can be modified at `main.cpp:60`.
+* `my_parameter_samples.txt`: parameter sets to be evaluated in the model, with one parameter per column (e.g., hbv_param.txt). Currently there are 12 parameters being read into the model, which would correspond to 12 columns per row of this file. The parameters are read from `stdin`, hence the `<` operator to pipe the contents of the file to the executable. The order of parameters to be read in can be modified at [`hbv_model.cpp:309`](https://github.com/jdherman/hbv/blob/master/hbv_model.cpp#L309).
 
 In its current form, the model will output (or optimize) the mean squared error (MSE) from the time period. However, the output can easily be modified to include any combination of states/fluxes or error metrics from any time during the simulation.
 

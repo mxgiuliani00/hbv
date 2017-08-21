@@ -28,7 +28,8 @@ using namespace std;
 
 void evaluate(double* Qobs, double* Qsim, int nDays, double* objs){
 
-    // calibration minimizes the RMSE + maximize R2 (1-year of warmup)
+    // calibration minimizes the MSE and maximizes R2 (1-year of warmup)
+    // todo: use 2 objectives that are not correlated
     vector<double> Qerr, Qerr2, Qv;
     for(unsigned int i=366; i<nDays; i++){
         Qerr.push_back( Qobs[i] - Qsim[i] ); // model error
