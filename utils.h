@@ -35,7 +35,7 @@ public:
     static vector<double> loadVector(string file_name, unsigned int l);
 
     /**
-     * function to print a vetor to a file (App append the file)
+     * functions to print a vector to a file (App append the file)
      */
     static void logVector(vector<double> x, string file_name);
     static void logVectorApp(vector<double> x, string file_name);
@@ -89,13 +89,15 @@ public:
     static double computeMin(vector<double> g);
     static double computeMean(vector<double> g);
     static double computeVariance(vector<double> g);
+    static double computeStDev(vector<double> g);
+    static double computeCov(vector<double> x, vector<double> y);
+    static double computeCorr(vector<double> x, vector<double> y);
 
     /**
       * Normalization and De-normalization
       */
     static vector<double> normalizeVector( vector<double> X, vector<double> m, vector<double> M );
     static vector<double> deNormalizeVector( vector<double> X, vector<double> m, vector<double> M );
-
 
 };
 }

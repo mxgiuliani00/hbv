@@ -18,7 +18,7 @@ Contents:
 To compile and run:
 
 * Run `make` to compile. Modify the makefile first to use a different compiler or flags.
-* Run `./hbv my_forcing_data.txt my_output_file.txt < my_parameter_samples.txt` to perform simulation
+* Run `./SimHBV my_forcing_data.txt my_output_file.txt < my_parameter_samples.txt` to perform simulation
 * For calibration using [MOEAFramework](http://moeaframework.org), follow the instructions for connecting an external optimization problem [here](http://moeaframework.org/examples.html#example5). More detailed instructions are available from the [MOEAFramework Setup Guide](https://docs.google.com/document/pub?id=1Ts_tnvzZ-nDQ-Ym-RFtqM_LJMUNYKFZJ5WJdZxRmmrY). 
 * Note that the second argument (the output filename) is only available in simulation mode.
 
@@ -27,13 +27,13 @@ Arguments:
 * `my_output_file.txt`: name of file to output performance metric(s) (simulation mode only)
 * `my_parameter_samples.txt`: parameter sets to be evaluated in the model, with one parameter per column (e.g., hbv_param.txt). Currently there are 12 parameters being read into the model, which would correspond to 12 columns per row of this file. The parameters are read from `stdin`, hence the `<` operator to pipe the contents of the file to the executable. The order of parameters to be read in can be modified at [`hbv_model.cpp:309`](https://github.com/jdherman/hbv/blob/master/hbv_model.cpp#L309).
 
-In its current form, the model will output (or optimize) the mean squared error (MSE) from the time period. However, the output can easily be modified to include any combination of states/fluxes or error metrics from any time during the simulation.
+In its current form, the model will output (or optimize) the relative variability (alpha), absolute value of the relative bias (beta) and the correlation (r) between the simulated and observed flows over the simulated time period. These objectives represent three components of the Nash Sutcliffe Efficiency (see [Gupta et al. (2009)](http://www.sciencedirect.com/science/article/pii/S0022169409004843)). However, the output can easily be modified to include any combination of states/fluxes or error metrics from any time during the simulation.
 
 Based on work from the following paper:
 Herman, J.D., P.M. Reed, and T. Wagener (2013), Time-varying sensitivity analysis clarifies the effects of watershed model formulation on model behavior, Water Resour. Res., 49, doi:10.1002/wrcr.20124.
 ([Link to Paper](http://onlinelibrary.wiley.com/doi/10.1002/wrcr.20124/abstract))
 
-Copyright (C) 2010-2015 Matteo Giuliani, Josh Kollat, Jon Herman, and others.
+Copyright (C) 2010-2017 Matteo Giuliani, Josh Kollat, Jon Herman, and others.
 
 HBV is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

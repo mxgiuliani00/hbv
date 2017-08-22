@@ -234,6 +234,33 @@ double utils::computeVariance(vector<double> g){
     return v/g.size();
 }
 
+double utils::computeStDev(vector<double> g){
+    double v = computeVariance(g);
+    double s = sqrt(v);
+    return s;
+}
+
+double utils::computeCov(vector<double> x, vector<double> y){
+    double x_mean = computeMean(x);
+    double y_mean = computeMean(y);
+
+    double total = 0;
+    for(int i=0; i<x.size(); i++){
+        total+= ( x[i]-x_mean )*( y[i]-y_mean );
+    }
+
+    double cov = total/x.size();
+    return cov;
+}
+
+double utils::computeCorr(vector<double> x, vector<double> y){
+    double cov = computeCov(x, y);
+    double x_std = computeStDev(x);
+    double y_std = computeStDev(y);
+    double corr = cov / ( x_std*y_std );
+    return corr;
+}
+
 
 vector<double> utils::normalizeVector(vector<double> X, vector<double> m, vector<double> M){
 

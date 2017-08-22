@@ -23,24 +23,32 @@ C/C++ Version of HBV: Lumped model, one catchment. Uses Hamon ET and MOPEX forci
 #include "moeaframework.h"
 #include "utils.h"
 #include <math.h>
+#include <vector>
 
 using namespace std;
 
 void evaluate(double* Qobs, double* Qsim, int nDays, double* objs){
 
-    // calibration minimizes the MSE and maximizes R2 (1-year of warmup)
-    // todo: use 2 objectives that are not correlated
-    vector<double> Qerr, Qerr2, Qv;
-    for(unsigned int i=366; i<nDays; i++){
-        Qerr.push_back( Qobs[i] - Qsim[i] ); // model error
-        Qerr2.push_back( (Qobs[i] - Qsim[i])*(Qobs[i] - Qsim[i]) ); // model squared error
-        Qv.push_back( Qobs[i] );
+    //convert observations and simulations from array to vector
+    vector<double> Vobs(nDays, -99);
+    vector<double> Vsim(nDays, -99);
+    for(int i=0; i<Vobs.size(); i++){
+        Vobs[i] = Qobs[i];
+        Vsim[i] = Qsim[i];
     }
-    double MSE = pow( utils::computeMean(Qerr2), 0.5 );
-    double R2 = 1 - ( utils::computeVariance( Qerr ) / utils::computeVariance( Qv ) ) ;
-    // 2-objective calibration
-    objs[0] = MSE;
-    objs[1] = -R2;
+
+    // calibration using NSE decomposition from Gupta et al., 2009 
+    // (see http://www.meteo.mcgill.ca/~huardda/articles/gupta09.pdf):
+    // obj 1) minimize relative variability (alpha)
+    // obj 2) minimize absolute value of relative bias (beta)
+    // obj 3) maximize correlation coefficient (r)
+    double alpha = utils::computeStDev(Vsim) / utils::computeStDev(Vobs);
+    double beta = fabs( utils::computeMean(Vsim) - utils::computeMean(Vobs) ) / utils::computeStDev(Vobs);
+    double r = utils::computeCorr(Vsim, Vobs);
+    // 3-objective calibration
+    objs[0] = alpha;
+    objs[1] = beta;
+    objs[2] = -r;
 }
 
 
@@ -58,7 +66,7 @@ int main(int argc, char **argv)
     hbv_model myHBV(input_file);
 
     // calibration settings
-    int nobjs = 2;
+    int nobjs = 3;
     int nvars = 12;
     double objs[nobjs];
     double vars[nvars];
