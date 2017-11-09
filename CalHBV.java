@@ -21,7 +21,7 @@ public class CalHBV {
         public static class myHBV extends ExternalProblem {
 
                 public myHBV() throws IOException {
-                        super("./SimHBV", "./data/data_Tavg.txt");
+                        super("./SimHBV", "./example_data/data_Tavg.txt");
 		}
 
 		/**
@@ -61,7 +61,7 @@ public class CalHBV {
 
 		@Override
 		public int getNumberOfObjectives() {
-                        return 2;
+                        return 3;
 		}
 
 		@Override
@@ -74,12 +74,12 @@ public class CalHBV {
 	public static void main(String[] args) {
 		// seed
 		long seed;
-		String alg="NSGAII";
-		int nfe=10000;
-                float eps = 1;
-		if(args.length > 0){
-			try{
-				seed = Long.parseLong(args[0]);
+        String alg="NSGAII";
+        int nfe=10000;
+        float eps = 1;
+        if(args.length > 0){
+            try{
+                seed = Long.parseLong(args[0]);
 				PRNG.setSeed(seed);
 			}catch(NumberFormatException e){
 				System.err.println("Argument must be a number"); 
@@ -89,7 +89,7 @@ public class CalHBV {
 		if(args.length > 1){
 				alg = args[1];
 				nfe = Integer.parseInt(args[2]);
-                                eps = Float.parseFloat(args[3]);
+                eps = Float.parseFloat(args[3]);
 		}
 
 		//configure and run
@@ -101,38 +101,40 @@ public class CalHBV {
 				.run();
 		
 				
-		//display the results
-                for (Solution solution : result) {
-			System.out.print(solution.getVariable(0));
-			System.out.print(" ");
-			System.out.print(solution.getVariable(1));
-			System.out.print(" ");
-			System.out.print(solution.getVariable(2));
-			System.out.print(" ");
-			System.out.print(solution.getVariable(3));
-			System.out.print(" ");
-                        System.out.print(solution.getVariable(4));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(5));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(6));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(7));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(8));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(9));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(10));
-                        System.out.print(" ");
-                        System.out.print(solution.getVariable(11));
-                        System.out.print(" ");
-                        System.out.print(solution.getObjective(0));
-                        System.out.print(" ");
-                        System.out.println(solution.getObjective(1));
-                        }
-
-		
-	}
+        //display the results
+        for (Solution solution : result) {
+            System.out.print(solution.getVariable(0));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(1));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(2));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(3));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(4));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(5));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(6));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(7));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(8));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(9));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(10));
+            System.out.print(" ");
+            System.out.print(solution.getVariable(11));
+            System.out.print(" ");
+            System.out.print(solution.getObjective(0));
+            System.out.print(" ");
+            System.out.print(solution.getObjective(1));
+            System.out.print(" ");
+            System.out.println(solution.getObjective(2));
+        }
+        
+        
+    }
 	
 }
