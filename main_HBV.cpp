@@ -29,10 +29,10 @@ using namespace std;
 
 void evaluate(double* Qobs, double* Qsim, int nDays, double* objs){
 
-    //convert observations and simulations from array to vector
+    //convert observations and simulations from array to vector removing first year which is used as warm-up 
     vector<double> Vobs(nDays, -99);
     vector<double> Vsim(nDays, -99);
-    for(int i=0; i<Vobs.size(); i++){
+    for(int i=366; i<Vobs.size(); i++){
         Vobs[i] = Qobs[i];
         Vsim[i] = Qsim[i];
     }
